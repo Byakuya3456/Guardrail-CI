@@ -39,3 +39,22 @@ def test_apply_patch_to_workspace(tmp_path: Path) -> None:
     written_file = tmp_path / "src" / "pkg" / "module.py"
     assert written_file.exists()
     assert written_file.read_text(encoding="utf-8") == "import sys\n"
+
+
+def test_apply_patch_blocks_path_traversal(tmp_path: Path) -> None:
+    import pytest
+
+    plan = RemediationPlan(
+        description="Malicious traversal",
+        intended_effect="Escape workspace",
+        files=[
+            PatchFile(
+                path="../../evil.py",
+                modified_content="# evil",
+                diff="...",
+            )
+        ],
+    )
+
+    with pytest.raises(ValueError, match="Path traversal security violation"):
+        apply_patch_to_workspace(tmp_path, plan)

@@ -228,7 +228,7 @@ Guardrail-CI validates generated patches inside isolated environments with stric
 Build the unprivileged worker container image:
 
 ```bash
-docker build -t guardrail-ci-worker:latest -f docker/Dockerfile.worker .
+docker build -t guardrail-ci-worker:latest -f docker/Dockerfile.validator .
 ```
 
 Verify the image:

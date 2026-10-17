@@ -30,6 +30,12 @@ def test_denied_paths_and_prefixes() -> None:
         "id_rsa",
         "cert.pem",
         "private.key",
+        "../../etc/passwd",
+        "../outside.py",
+        "/etc/shadow",
+        "C:/Windows/system.ini",
+        "src/../../evil.py",
+        "\\\\evil\\share\\file.py",
     ]
     for path in denied:
         allowed, reason = is_path_allowed(path)

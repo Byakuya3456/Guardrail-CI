@@ -31,8 +31,17 @@ def generate_unified_diff(
 def apply_patch_to_workspace(workspace_dir: Path, plan: RemediationPlan) -> list[str]:
     """Write modified files from a validated RemediationPlan into a workspace directory."""
     modified_paths: list[str] = []
+    resolved_workspace = workspace_dir.resolve()
+
     for patch_file in plan.files:
-        target_path = workspace_dir / patch_file.path
+        cleaned_rel_path = patch_file.path.strip().lstrip("/\\")
+        target_path = (workspace_dir / cleaned_rel_path).resolve()
+
+        if not target_path.is_relative_to(resolved_workspace):
+            raise ValueError(
+                f"Path traversal security violation: '{patch_file.path}' escapes workspace directory."
+            )
+
         target_path.parent.mkdir(parents=True, exist_ok=True)
         target_path.write_text(patch_file.modified_content, encoding="utf-8")
         modified_paths.append(patch_file.path)

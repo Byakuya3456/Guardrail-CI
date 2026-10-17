@@ -42,7 +42,24 @@ MAX_ALLOWED_FILES_PER_PATCH = 5
 
 def is_path_allowed(path: str) -> tuple[bool, str]:
     """Check if a specific file path is permitted for modification."""
-    normalized = PurePosixPath(path).as_posix()
+    if not path or not path.strip():
+        return False, "Path cannot be empty."
+
+    raw_path = path.strip().replace("\\", "/")
+
+    # Prohibit drive letters, root slashes, or absolute paths
+    if ":" in raw_path or raw_path.startswith("/"):
+        return False, f"Absolute path '{path}' is strictly prohibited."
+
+    posix = PurePosixPath(raw_path)
+    if posix.is_absolute():
+        return False, f"Absolute path '{path}' is strictly prohibited."
+
+    # Prohibit directory traversal tokens
+    if ".." in posix.parts:
+        return False, f"Directory traversal sequence in path '{path}' is strictly prohibited."
+
+    normalized = posix.as_posix()
     if normalized.startswith("./"):
         normalized = normalized[2:]
 

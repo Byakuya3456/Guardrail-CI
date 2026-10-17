@@ -45,7 +45,7 @@ def build_diagnosis_prompt(
             "job": item.job,
             "step": item.step,
             "source": item.source,
-            "sanitized_excerpt": item.excerpt,
+            "sanitized_excerpt": item.excerpt.replace("---", "- - -"),
         }
         for item in evidence
     ]

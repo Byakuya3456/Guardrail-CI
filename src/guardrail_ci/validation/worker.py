@@ -47,6 +47,8 @@ class DockerValidationWorker(ValidationWorker):
             "docker",
             "run",
             "--rm",
+            "--security-opt=no-new-privileges",
+            "--cap-drop=ALL",
             "--memory=512m",
             "--cpus=1",
             "-v",
