@@ -28,7 +28,7 @@ class GitHubSettings(BaseSettings):
     )
 
     token: str = Field(default="", description="Fine-grained GitHub Personal Access Token")
-    allowed_repos: list[str] = Field(
+    allowed_repos: list[str] | str = Field(
         default_factory=list,
         description="Allowed repository names in owner/repo format",
     )

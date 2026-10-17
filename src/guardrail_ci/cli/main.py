@@ -16,7 +16,14 @@ from guardrail_ci.core.models import IncidentState
 from guardrail_ci.core.orchestrator import Orchestrator
 from guardrail_ci.policy.engine import PolicyEngine
 
-console = Console()
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
+console = Console(legacy_windows=False)
 
 
 @click.group()
