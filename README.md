@@ -86,6 +86,7 @@ pytest --cov=guardrail_ci tests/
 ## 📖 Architecture & Documentation
 
 - [Setup Guide](./setup_guide.md)
+- [Security Fixes & Hardening Log](./docs/security_fixes.md)
 - [Security Audit Report](./docs/security_audit_report.md)
 - [Product Requirements Document (PRD)](./docs/Guardrail-CI_MVP_PRD.md)
 - [Project Plan](./docs/plan.md)
