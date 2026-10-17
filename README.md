@@ -85,6 +85,7 @@ pytest --cov=guardrail_ci tests/
 
 ## 📖 Architecture & Documentation
 
-- [Product Requirements Document (PRD)](./Guardrail-CI_MVP_PRD.md)
-- [Project Plan](./plan.md)
-- [Implementation Guide](./implementation.md)
+- [Setup Guide](./setup_guide.md)
+- [Product Requirements Document (PRD)](./docs/Guardrail-CI_MVP_PRD.md)
+- [Project Plan](./docs/plan.md)
+- [Implementation Guide](./docs/implementation.md)
