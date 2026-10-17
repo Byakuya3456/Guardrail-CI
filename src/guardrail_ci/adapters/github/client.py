@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from typing import Any, cast
+
 import httpx
 
 from guardrail_ci.adapters.github.models import WorkflowJob, WorkflowRun

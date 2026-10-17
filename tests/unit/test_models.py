@@ -15,16 +15,20 @@ def test_incident_initial_state() -> None:
     assert incident.diagnosis is None
 
 
+def _assert_state(incident: Incident, expected: IncidentState) -> None:
+    assert incident.state == expected
+
+
 def test_valid_state_transitions() -> None:
     incident = Incident(repository="owner/repo", run_id=123)
     incident.transition_to(IncidentState.EVIDENCE_COLLECTED)
-    assert getattr(incident, "state") == IncidentState.EVIDENCE_COLLECTED
+    _assert_state(incident, IncidentState.EVIDENCE_COLLECTED)
 
     incident.transition_to(IncidentState.DIAGNOSED)
-    assert getattr(incident, "state") == IncidentState.DIAGNOSED
+    _assert_state(incident, IncidentState.DIAGNOSED)
 
     incident.transition_to(IncidentState.COMPLETED_WITHOUT_WRITE)
-    assert getattr(incident, "state") == IncidentState.COMPLETED_WITHOUT_WRITE
+    _assert_state(incident, IncidentState.COMPLETED_WITHOUT_WRITE)
 
 
 def test_invalid_state_transition_raises() -> None:
