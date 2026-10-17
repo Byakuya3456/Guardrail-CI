@@ -63,6 +63,10 @@ Run an investigation on a failed GitHub Actions run:
 guardrail-ci investigate --repo owner/repo-name --run-id 123456789
 ```
 
+#### Example Output
+
+![Guardrail-CI Investigation Example](./docs/assets/investigation_demo.png)
+
 Output as structured JSON:
 
 ```bash
