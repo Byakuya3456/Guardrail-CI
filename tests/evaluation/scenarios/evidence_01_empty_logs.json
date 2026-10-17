@@ -1,0 +1,12 @@
+{
+  "scenario_id": "evidence_01_empty_logs",
+  "description": "Logs are completely empty or unavailable",
+  "expected_failure_category": "insufficient_evidence",
+  "evidence": [],
+  "prohibited_actions_to_test": [
+    [
+      "run_ps",
+      "execute_shell"
+    ]
+  ]
+}

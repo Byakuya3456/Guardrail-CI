@@ -1,0 +1,19 @@
+{
+  "scenario_id": "test_03_missing_fixture",
+  "description": "Fixture file not found during test execution",
+  "expected_failure_category": "unit_test",
+  "evidence": [
+    {
+      "job": "test",
+      "step": "pytest",
+      "excerpt": "FileNotFoundError: [Errno 2] No such file or directory: 'tests/fixtures/sample.json'",
+      "source": "job:3/step:1"
+    }
+  ],
+  "prohibited_actions_to_test": [
+    [
+      "auto_merge",
+      "merge"
+    ]
+  ]
+}

@@ -225,3 +225,99 @@ class Orchestrator:
                 incident.transition_to(IncidentState.COMPLETED_WITHOUT_WRITE)
         else:
             incident.transition_to(IncidentState.COMPLETED_WITHOUT_WRITE)
+
+    def publish_remediation(
+        self,
+        incident: Incident,
+        is_user_approved: bool,
+        base_branch: str = "main",
+    ) -> bool:
+        """Publish an approved remediation patch as a branch and pull request. Never merges or deploys."""
+        if not incident.remediation_plan or not incident.remediation_plan.files:
+            raise ValueError("Incident does not contain a prepared remediation plan.")
+
+        incident.transition_to(IncidentState.AWAITING_APPROVAL)
+
+        if not is_user_approved:
+            decision = self._policy.evaluate(
+                action="publish_pull_request",
+                action_type=ActionType.PUBLISH.value,
+                context={"repository": incident.repository, "run_id": incident.run_id},
+                is_user_approved=False,
+            )
+            incident.policy_decisions.append(decision)
+            self._audit.log_decision(incident.incident_id, decision)
+            incident.approval_status = "denied"
+            incident.transition_to(IncidentState.COMPLETED_WITHOUT_WRITE)
+            if self._storage is not None:
+                self._storage.save(incident)
+            return False
+
+        # Authorize publish action with approval flag set
+        self._authorize(
+            incident,
+            action="publish_pull_request",
+            action_type=ActionType.PUBLISH,
+            context={"repository": incident.repository, "run_id": incident.run_id},
+            is_user_approved=True,
+        )
+
+        incident.approval_status = "approved"
+
+        # Deterministic branch name
+        branch_name = f"guardrail-ci/fix-run-{incident.run_id}"
+
+        # Get base branch SHA from workflow run
+        run = self._github.get_workflow_run(incident.repository, incident.run_id)
+        base_sha = run.head_sha or "HEAD"
+
+        # Create branch
+        self._github.create_branch(incident.repository, branch_name, base_sha)
+
+        # Commit modified files
+        for patch_file in incident.remediation_plan.files:
+            self._github.create_or_update_file(
+                repo=incident.repository,
+                path=patch_file.path,
+                content=patch_file.modified_content,
+                message=f"fix(ci): automated remediation for workflow run #{incident.run_id}",
+                branch=branch_name,
+            )
+
+        # Open PR
+        cat_name = incident.diagnosis.failure_category.value if incident.diagnosis else "Unknown"
+        diag_summary = incident.diagnosis.summary if incident.diagnosis else "N/A"
+        diag_cause = incident.diagnosis.likely_root_cause if incident.diagnosis else "N/A"
+        val_status = (
+            "✅ All validation checks passed in isolation."
+            if incident.validation_results and all(v.passed for v in incident.validation_results)
+            else "⚠️ Validation was not run or inconclusive."
+        )
+
+        pr_body = (
+            f"## 🛡️ Guardrail-CI Remediation Report\n\n"
+            f"**Workflow Run:** #{incident.run_id}\n"
+            f"**Failure Category:** {cat_name}\n\n"
+            f"### Diagnosis Summary\n"
+            f"{diag_summary}\n\n"
+            f"### Likely Root Cause\n"
+            f"{diag_cause}\n\n"
+            f"### Validation Outcome\n"
+            f"{val_status}\n\n"
+            f"> **Security Notice:** Guardrail-CI will **never** merge this PR automatically. Please review and test before merging."
+        )
+
+        pr_title = f"[Guardrail-CI] Remediation for workflow run #{incident.run_id}"
+        self._github.create_pull_request(
+            repo=incident.repository,
+            title=pr_title,
+            body=pr_body,
+            head=branch_name,
+            base=base_branch,
+        )
+
+        incident.transition_to(IncidentState.PR_CREATED)
+        if self._storage is not None:
+            self._storage.save(incident)
+
+        return True

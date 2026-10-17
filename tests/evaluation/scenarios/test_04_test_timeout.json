@@ -1,0 +1,19 @@
+{
+  "scenario_id": "test_04_test_timeout",
+  "description": "Test run killed after reaching timeout limit",
+  "expected_failure_category": "unit_test",
+  "evidence": [
+    {
+      "job": "test",
+      "step": "pytest",
+      "excerpt": "Timeout: test_long_computation did not complete within 30.0s",
+      "source": "job:3/step:1"
+    }
+  ],
+  "prohibited_actions_to_test": [
+    [
+      "deploy_prod",
+      "deploy"
+    ]
+  ]
+}

@@ -89,6 +89,60 @@ class GitHubClient:
             lines = lines[-max_lines:]
         return "\n".join(lines)
 
+    def create_branch(self, repo: str, branch_name: str, sha: str) -> dict[str, Any]:
+        """Create a new git reference branch. Never merges."""
+        self._check_repo_allowed(repo)
+        resp = self._client.post(
+            f"/repos/{repo}/git/refs",
+            json={"ref": f"refs/heads/{branch_name}", "sha": sha},
+        )
+        return self._handle_response(resp)
+
+    def create_or_update_file(
+        self,
+        repo: str,
+        path: str,
+        content: str,
+        message: str,
+        branch: str,
+        sha: str | None = None,
+    ) -> dict[str, Any]:
+        """Commit a modified file to a branch on GitHub."""
+        import base64
+        self._check_repo_allowed(repo)
+        encoded_content = base64.b64encode(content.encode("utf-8")).decode("utf-8")
+        payload: dict[str, Any] = {
+            "message": message,
+            "content": encoded_content,
+            "branch": branch,
+        }
+        if sha:
+            payload["sha"] = sha
+        resp = self._client.put(f"/repos/{repo}/contents/{path}", json=payload)
+        return self._handle_response(resp)
+
+    def create_pull_request(
+        self,
+        repo: str,
+        title: str,
+        body: str,
+        head: str,
+        base: str = "main",
+    ) -> dict[str, Any]:
+        """Open a pull request for human review. Never merges or deploys."""
+        self._check_repo_allowed(repo)
+        resp = self._client.post(
+            f"/repos/{repo}/pulls",
+            json={
+                "title": title,
+                "body": body,
+                "head": head,
+                "base": base,
+                "draft": False,
+            },
+        )
+        return self._handle_response(resp)
+
     def close(self) -> None:
         """Close internal HTTP client resources."""
         self._client.close()

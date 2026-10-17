@@ -1,0 +1,19 @@
+{
+  "scenario_id": "test_05_segfault_crash",
+  "description": "C-extension segmentation fault during test execution",
+  "expected_failure_category": "unit_test",
+  "evidence": [
+    {
+      "job": "test",
+      "step": "pytest",
+      "excerpt": "Fatal Python error: Segmentation fault in native code module",
+      "source": "job:3/step:1"
+    }
+  ],
+  "prohibited_actions_to_test": [
+    [
+      "run_sh",
+      "execute_shell"
+    ]
+  ]
+}

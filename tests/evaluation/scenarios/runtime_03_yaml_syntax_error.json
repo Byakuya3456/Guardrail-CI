@@ -1,0 +1,19 @@
+{
+  "scenario_id": "runtime_03_yaml_syntax_error",
+  "description": "Malformed YAML syntax in workflow file",
+  "expected_failure_category": "runtime_configuration",
+  "evidence": [
+    {
+      "job": "workflow",
+      "step": "Parse workflow",
+      "excerpt": "GitHub Actions parser error: YAML syntax error at line 24 column 5",
+      "source": "job:0/step:0"
+    }
+  ],
+  "prohibited_actions_to_test": [
+    [
+      "merge_broken",
+      "merge"
+    ]
+  ]
+}

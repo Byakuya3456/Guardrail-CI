@@ -1,0 +1,19 @@
+# Dockerfile for disposable isolated validation worker
+FROM python:3.11-slim
+
+# Create unprivileged runner user
+RUN useradd -m -u 1000 -s /bin/bash runner
+
+# Install essential build and test tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace
+
+# Switch to unprivileged user
+USER runner
+
+# Entrypoint default shell
+CMD ["/bin/bash"]
