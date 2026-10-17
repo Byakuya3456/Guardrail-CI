@@ -3,7 +3,7 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**Guardrail-CI** is a security-conscious AI assistant that investigates failed GitHub Actions CI runs, produces evidence-grounded diagnoses, proposes minimal remediation diffs, validates changes in isolated environments, and prepares human-reviewable pull requests — **without ever autonomously merging or deploying code**.
+**Guardrail-CI** is a security-conscious AI assistant that investigates failed GitHub Actions CI runs, produces evidence-grounded diagnoses, proposes minimal remediation diffs, validates changes in isolated environments, and prepares human-reviewable pull requests, **without ever autonomously merging or deploying code**.
 
 ---
 

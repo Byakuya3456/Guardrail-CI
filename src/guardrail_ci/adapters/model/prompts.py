@@ -77,7 +77,7 @@ def build_remediation_prompt(
         "CRITICAL CONSTRAINTS:\n"
         "1. Only modify files directly related to fixing the specific failure.\n"
         "2. NEVER modify workflow YAML files (.github/workflows/*), security policies, credentials, or .env files.\n"
-        "3. Produce minimal diffs — do not refactor unrelated code.\n"
+        "3. Produce minimal diffs - do not refactor unrelated code.\n"
         "4. Output MUST be a valid JSON object matching:\n"
         "{\n"
         '  "description": "Overview of fix",\n'

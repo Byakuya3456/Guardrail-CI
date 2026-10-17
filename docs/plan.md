@@ -1,4 +1,4 @@
-# Guardrail-CI — Project Plan
+# Guardrail-CI - Project Plan
 
 **Version:** 0.1  
 **Date:** October 2026  
@@ -8,7 +8,7 @@
 
 ## 1. Project Overview
 
-Guardrail-CI is a security-conscious AI assistant that investigates failed GitHub Actions workflows. It retrieves evidence, diagnoses failures, proposes minimal patches, validates them in isolation, and prepares human-reviewable results — all governed by a deterministic policy layer that sits *outside* the AI model.
+Guardrail-CI is a security-conscious AI assistant that investigates failed GitHub Actions workflows. It retrieves evidence, diagnoses failures, proposes minimal patches, validates them in isolation, and prepares human-reviewable results - all governed by a deterministic policy layer that sits *outside* the AI model.
 
 **Core principle:** The model recommends; a separate policy layer authorizes. No autonomous merging or deployment.
 
@@ -82,7 +82,7 @@ Guardrail-CI is a security-conscious AI assistant that investigates failed GitHu
 The PRD defines 5 phases. Each phase below maps to specific functional requirements (FRs), acceptance criteria (ACs), and deliverables.
 
 ### Phase 1: Read-Only Investigator
-**Goal:** Retrieve evidence from a failed GitHub Actions run and produce a structured diagnosis — zero repository writes.
+**Goal:** Retrieve evidence from a failed GitHub Actions run and produce a structured diagnosis - zero repository writes.
 
 | Item | Detail |
 |---|---|
@@ -115,7 +115,7 @@ The PRD defines 5 phases. Each phase below maps to specific functional requireme
 2. Policy engine: deterministic rules, default-deny for unknowns
 3. Tool layer: typed schemas wrapping every external operation
 4. Audit logger: structured JSON, automatic secret pattern redaction
-5. Integration with orchestrator — all actions route through policy
+5. Integration with orchestrator - all actions route through policy
 6. Policy test suite: prohibited action tests (100% block rate target)
 
 ### Phase 3: Patch & Validation
@@ -194,7 +194,7 @@ Expand after baseline metrics are established.
 |---|---|---|
 | **First model provider** | OpenAI GPT-4o-mini via API, with Ollama local fallback | Low cost, good structured output, adapter-preserving |
 | **Validation isolation** | Docker containers (`docker run --rm --network=none`) | True isolation, no credentials, disposable, well-understood |
-| **Branch/PR in first demo** | Defer to Phase 4 — demo Phase 1-3 first | Diagnosis + validation is the core value; PR creation is mechanical |
+| **Branch/PR in first demo** | Defer to Phase 4 - demo Phase 1-3 first | Diagnosis + validation is the core value; PR creation is mechanical |
 | **GitHub API operations** | Map in Phase 1: `GET /repos/.../actions/runs`, `/jobs`, `/logs` | Minimum token permissions: `actions:read`, `contents:read` |
 | **Secret redaction patterns** | Regex-based: `GITHUB_TOKEN`, `AWS_*`, `API_KEY`, Bearer tokens, base64-like strings | Start conservative, iterate on false positive rate |
 

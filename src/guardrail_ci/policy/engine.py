@@ -48,7 +48,7 @@ class PolicyEngine:
                 action=action,
                 action_type=action_type,
                 allowed=False,
-                reason=f"Unknown or unrecognized action type '{action_type}' — denied by default.",
+                reason=f"Unknown or unrecognized action type '{action_type}' - denied by default.",
             )
 
         if typed_action in PROHIBITED_ACTIONS:
@@ -88,5 +88,5 @@ class PolicyEngine:
             action=action,
             action_type=action_type,
             allowed=False,
-            reason="Action fell through evaluation criteria — denied by default.",
+            reason="Action fell through evaluation criteria - denied by default.",
         )

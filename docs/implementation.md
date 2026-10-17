@@ -1,4 +1,4 @@
-# Guardrail-CI — Implementation Guide
+# Guardrail-CI - Implementation Guide
 
 **Version:** 0.1  
 **Date:** October 2026  
@@ -154,7 +154,7 @@ guardrail-ci/
 
 ---
 
-## 2. Phase 1 Implementation — Read-Only Investigator
+## 2. Phase 1 Implementation - Read-Only Investigator
 
 ### 2.1 Step 1: Project Scaffolding
 
@@ -753,7 +753,7 @@ class OpenAICompatAdapter(ModelAdapter):
 **File: `src/guardrail_ci/core/orchestrator.py`**
 
 ```python
-"""Incident orchestrator — drives the state machine from RECEIVED to completion."""
+"""Incident orchestrator - drives the state machine from RECEIVED to completion."""
 
 from __future__ import annotations
 
@@ -794,7 +794,7 @@ class Orchestrator:
             # Phase 2: Diagnose
             incident = self._diagnose(incident)
 
-            # Mark complete (Phase 1 stops here — no writes)
+            # Mark complete (Phase 1 stops here - no writes)
             incident.state = IncidentState.COMPLETED_WITHOUT_WRITE
 
         except Exception as e:
@@ -831,7 +831,7 @@ class Orchestrator:
                 failure_category=FailureCategory.INSUFFICIENT_EVIDENCE,
                 summary="No evidence could be collected from the workflow run.",
                 evidence=[],
-                likely_root_cause="Unknown — insufficient evidence.",
+                likely_root_cause="Unknown - insufficient evidence.",
                 confidence=0.0,
                 recommended_actions=["Review workflow logs manually."],
             )
@@ -943,7 +943,7 @@ def _render_rich_report(incident) -> None:
 
 ---
 
-## 3. Phase 2 Implementation — Policy & Audit
+## 3. Phase 2 Implementation - Policy & Audit
 
 ### 3.1 Policy Engine
 
@@ -1009,7 +1009,7 @@ ALLOWED_ACTIONS: set[ActionType] = {
 class PolicyEngine:
     """Evaluate whether a tool action is permitted.
 
-    This is the security boundary — the model CANNOT override policy.
+    This is the security boundary - the model CANNOT override policy.
     Default: DENY for any unknown action.
     """
 
@@ -1022,7 +1022,7 @@ class PolicyEngine:
                 action=action,
                 action_type=action_type,
                 allowed=False,
-                reason=f"Unknown action type '{action_type}' — denied by default.",
+                reason=f"Unknown action type '{action_type}' - denied by default.",
             )
 
         if at in PROHIBITED_ACTIONS:
@@ -1055,7 +1055,7 @@ class PolicyEngine:
             action=action,
             action_type=action_type,
             allowed=False,
-            reason="Action not recognized — denied by default.",
+            reason="Action not recognized - denied by default.",
         )
 ```
 
@@ -1120,7 +1120,7 @@ class AuditLogger:
 
 ---
 
-## 4. Phase 3 Implementation — Patch & Validation
+## 4. Phase 3 Implementation - Patch & Validation
 
 ### 4.1 Patch Constraints
 
@@ -1258,7 +1258,7 @@ class DockerValidationWorker:
 
 ---
 
-## 5. Phase 4 Implementation — Human-Reviewed PR
+## 5. Phase 4 Implementation - Human-Reviewed PR
 
 ### 5.1 Approval Flow
 
@@ -1347,7 +1347,7 @@ def create_pull_request(
 
 ---
 
-## 6. Phase 5 Implementation — Evaluation & Polish
+## 6. Phase 5 Implementation - Evaluation & Polish
 
 ### 6.1 Evaluation Scenario Format
 
@@ -1588,7 +1588,7 @@ def test_log_injection_ignored():
 
 ---
 
-## 9. Getting Started — First Steps
+## 9. Getting Started - First Steps
 
 ```bash
 # 1. Create and activate virtual environment

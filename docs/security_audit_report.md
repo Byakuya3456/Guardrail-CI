@@ -82,7 +82,7 @@ flowchart TD
 ---
 
 ### SEC-01: Path Traversal / Arbitrary File Overwrite via Unsanitized Patch Paths
-- **Severity:** **HIGH** (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N — 7.5)
+- **Severity:** **HIGH** (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N - 7.5)
 - **Component:** `guardrail_ci.remediation.constraints.is_path_allowed` & `guardrail_ci.remediation.patch.apply_patch_to_workspace`
 - **Description:**
   In `constraints.py`, `is_path_allowed(path)` normalizes paths using `PurePosixPath(path).as_posix()`. However, it does not reject absolute paths (e.g., `/etc/passwd` or `C:/Windows/System32/drivers/etc/hosts`) or paths containing relative traversal (`../../evil.py`).
@@ -109,7 +109,7 @@ flowchart TD
 ---
 
 ### SEC-02: Host Code Execution Exposure in Subprocess Validation Fallback
-- **Severity:** **MEDIUM** (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N — 6.3)
+- **Severity:** **MEDIUM** (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N - 6.3)
 - **Component:** `guardrail_ci.validation.worker.IsolatedSubprocessWorker`
 - **Description:**
   When Docker is unavailable, the system falls back to `IsolatedSubprocessWorker`. Although `is_command_allowlisted` ensures only commands like `pytest` or `npm test` are run, executing `pytest` inside an untrusted repository workspace executes Python test code (`conftest.py`, unit test files) directly under the user's host environment.
@@ -121,7 +121,7 @@ flowchart TD
 ---
 
 ### SEC-03: Prompt Delimiter Smuggling / Log Fencing Escape
-- **Severity:** **LOW** (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N — 3.8)
+- **Severity:** **LOW** (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N - 3.8)
 - **Component:** `guardrail_ci.adapters.model.prompts.build_diagnosis_prompt`
 - **Description:**
   Untrusted logs are wrapped in:
@@ -137,7 +137,7 @@ flowchart TD
 ---
 
 ### SEC-04: Missing Container Hardening Flags in Docker Worker
-- **Severity:** **LOW** (CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:L/I:L/A:N — 3.5)
+- **Severity:** **LOW** (CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:L/I:L/A:N - 3.5)
 - **Component:** `guardrail_ci.validation.worker.DockerValidationWorker`
 - **Description:**
   `DockerValidationWorker` passes `--network=none`, `--memory=512m`, and `--cpus=1`. However, it does not explicitly pass:
