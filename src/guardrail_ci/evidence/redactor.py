@@ -6,7 +6,7 @@ import re
 
 # Deterministic regex patterns that indicate sensitive credentials
 SECRET_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
-    ("github_classic_token", re.compile(r"ghp_[A-Za-z0-9]{36}", re.ASCII)),
+    ("github_classic_token", re.compile(r"ghp_[A-Za-z0-9]{30,45}", re.ASCII)),
     ("github_fine_grained_token", re.compile(r"github_pat_[A-Za-z0-9_]{82}", re.ASCII)),
     ("github_app_token", re.compile(r"gh[soru]_[A-Za-z0-9]{36,255}", re.ASCII)),
     ("aws_access_key", re.compile(r"\b(AKIA|ABIA|ACCA|ASIA)[0-9A-Z]{16}\b", re.ASCII)),

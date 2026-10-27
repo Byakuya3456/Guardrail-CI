@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import sys
+from typing import Any, cast
 
 import click
 from rich.console import Console
@@ -18,8 +19,10 @@ from guardrail_ci.policy.engine import PolicyEngine
 
 if sys.platform == "win32":
     try:
-        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+        if hasattr(sys.stdout, "reconfigure"):
+            cast(Any, sys.stdout).reconfigure(encoding="utf-8", errors="replace")
+        if hasattr(sys.stderr, "reconfigure"):
+            cast(Any, sys.stderr).reconfigure(encoding="utf-8", errors="replace")
     except Exception:
         pass
 
